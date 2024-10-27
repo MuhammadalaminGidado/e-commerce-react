@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import {
   fetchProducts,
   selectProducts,
@@ -10,26 +11,27 @@ const Products = () => {
   const { products, status, error } = useSelector(selectProducts);
 
   useEffect(() => {
-    if (status === "idle") {
+    const cachedTime = localStorage.getItem("products_timestamp");
+    const isCacheValid = cachedTime && Date.now() - cachedTime < 86400000;
+    if (status === "idle" && (!products || !isCacheValid)) {
       dispatch(fetchProducts());
     }
-  }, [dispatch, status]);
-
+  }, [dispatch, status, products]);
+  // TODO add react icons
   const productsList = products?.map((product) => (
-    <div
-      className="w-[200px] h-[200px] flex flex-col items-center justify-between gap-3 border border-[whitesmoke] m-4 p-4 bg-[whitesmoke] rounded"
-      key={product.id}
-    >
-      <img
-        src={product.image}
-        alt={product.title}
-        className="w-12 h-16 bg-none"
-      />
-      <div className="">
-        <h4 className="">{product.title.substring(0, 30)}</h4>
-        <p className="text-sm text-gray-500">£{product.price}</p>
+    <Link key={product.id} to="/products/:id">
+      <div className="w-[200px] h-[200px] flex flex-col items-center text-center justify-evenly gap-3 border border-[whitesmoke] m-4 p-2 bg-[whitesmoke] rounded shadow-md cursor-pointer">
+        <img
+          src={product.images[0]}
+          alt={product.title}
+          className={`bg-none h-12`}
+        />
+        <div className="w-[100px]">
+          <h4 className="text-sm">{product.title.substring(0, 30)}</h4>
+          <p className="text-[12px] text-gray-500">£{product.price}</p>
+        </div>
       </div>
-    </div>
+    </Link>
   ));
   if (status == "loading") {
     return <div className="ml-auto">Loading...</div>;
