@@ -4,13 +4,19 @@ import { initialProductsState } from "./productsDummy";
 export const fetchProducts = createAsyncThunk(
   "products/fetchProducts",
   async () => {
-    const response = await fetch("https://fakestoreapi.com/products");
-    const products = await response.json();
+    const response = await fetch("https://dummyjson.com/products");
+    const data = await response.json();
+    const products = data.products;
+    localStorage.setItem("products", JSON.stringify(products));
+    localStorage.setItem("products_timestamp", Date.now());
+    console.log(products);
     return products;
   }
 );
+
+const CACHE_EXPIRATION_TIME = 86400000;
 const initialState = {
-  products: [],
+  products: JSON.parse(localStorage.getItem("products")) || [],
   status: "idle",
   error: null,
 };

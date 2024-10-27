@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   return (
-    <nav className="w-3/4 m-4 p-4 border-black shadow-sm">
-      <div className="">
+    <nav className="m-4 p-4 border-black shadow-sm flex items-center">
+      <div className="flex-1">
         <Link className="link" to="/">
           Home
         </Link>
@@ -14,6 +15,7 @@ const Navbar = () => {
           Orders
         </Link>
       </div>
+      <SearchBar />
     </nav>
   );
 };

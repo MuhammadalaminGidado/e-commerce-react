@@ -1,6 +1,6 @@
 export const Product = (product) => {
   return (
-    <div className="w-[200px]">
+    <div className="">
       <img src={product.img} alt={product.title} />
       <div className="">
         <p>{product.title}</p>
